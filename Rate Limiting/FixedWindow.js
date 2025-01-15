@@ -40,14 +40,18 @@ function simulate(rateLimiter, requestIntervals, label) {
 
     requestIntervals.forEach(interval => {
         setTimeout(() => {
-            const result = rateLimiter.allowRequest
-                ? rateLimiter.allowRequest() // For Fixed Window
-                : rateLimiter.consume(); // For Token Bucket
+            const result = rateLimiter.allowRequest();
             console.log(`Time: ${time}s, Request ${result ? "allowed" : "denied"}`);
         }, interval * 1000);
         time += interval;
     });
 }
 
-const fixedWindow = new FixedWindowRateLimiter(10, 60000); // 10 requests per 1 minute
-simulate(fixedWindow, [0, 1, 1, 1, 1, 3, 1], "Fixed Window Algorithm");
+// Example: Simulate 10 requests per minute
+const fixedWindow = new FixedWindowRateLimiter(10, 60000); // 10 requests per minute
+
+simulate(
+    fixedWindow,
+    [0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], // Request at various intervals within and across the minute
+    "Fixed Window Algorithm - 10 Requests Per Minute"
+);
